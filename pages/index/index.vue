@@ -18,6 +18,7 @@
 						<text>工作室</text>
 					</view>
 				</view>
+				<!-- 宫格 -->
 				<uni-grid class="grid" :column="3" :highlight="true" @change="change">
 					<uni-grid-item class="grid-item" v-for="(item, index) in list" :index="index" :key="index">
 						<view class="grid-item-box" style="background-color: #fff;">
@@ -26,6 +27,7 @@
 						</view>
 					</uni-grid-item>
 				</uni-grid>
+				<!-- 动态 -->
 				<view class="cardList">
 					<view class="cardItem" v-for="item in 1">
 						<image src="../../static/img/index/banner01.jpg" mode="" class="cardItemImg" ></image>
@@ -106,7 +108,9 @@
 
 <style>
 	page{
-		/* background-color: #F2F2F2; */
+		/* #ifdef MP */
+		background-color: var(--studioBg);
+		/* #endif */
 	}
 	.container{
 		padding: 30rpx

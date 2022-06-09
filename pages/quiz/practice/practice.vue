@@ -170,7 +170,7 @@
 							id: i,
 							qid: res.data.data[i].id,
 							subject: temp.subject,
-							optList,
+							optList:optList,
 							answer: temp.answer,
 							type: temp.type
 						})

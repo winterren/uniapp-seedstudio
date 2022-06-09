@@ -11,8 +11,10 @@
 						
 						<view class="btnClose">重置</view>
 						<view class="btnClose">交卷</view>
-
-						<view class="btnClose">退出</view>
+						<navigator url="/pages/index/index" open-type="redirect"  class="btnClose">
+							<view>退出</view>
+						</navigator>
+						
 					</view>
 				
 					<view class="qView">

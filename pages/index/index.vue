@@ -184,11 +184,12 @@
 	
 	/* 动画波浪背景 */
 	.bg{
-		position: absolute;
+		position: fixed;
 		width: 100%;
-		height: 100vh;
+		/* height: 100vh; */
 		left: 0;
 		top: 0;
+		bottom: 0;
 		background-color: #F5F5F5;
 		background-color: var(--studioBg);
 		z-index: -30;

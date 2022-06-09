@@ -176,7 +176,12 @@
 </script>
 
 <style>
-	page{ background-color: var(--studioBg);}
+	page{ 
+		background-color: var(--studioBg); 
+		/* #ifdef H5 */
+		height: 100vh;
+		/* #endif */
+	}
 	
 	.container{ padding: 30rpx; }
 	

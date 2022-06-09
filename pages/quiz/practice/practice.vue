@@ -359,7 +359,7 @@
 	}
 	
 	/* page */
-	.container{padding: 160rpx 30rpx 0; }
+	.container{padding: 30rpx ; }
 	
 	/* 顶部 */
 	.top{ height: 100rpx; display: flex; align-items: center; justify-content: space-between; }
@@ -384,7 +384,7 @@
 	.analysis ol{ padding-inline-start: 1em; }
 	
 	/* 弹出菜单 */
-	.maskMenu{padding: 160rpx 30rpx 0; box-sizing: border-box;}
+	.maskMenu{padding: 30rpx ; box-sizing: border-box;}
 	.maskBtnList{ display: flex; }
 	.btnClose{ width: calc(26% + 16rpx); line-height: 60rpx; background-color: #333; color: #FFF; border-radius: 15rpx; text-align: center; margin-right: 2%; }
 	.qTitle{ margin: 30rpx 0 20rpx; }

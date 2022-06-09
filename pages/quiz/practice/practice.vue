@@ -33,8 +33,8 @@
 			<!-- 页面顶部 -->
 			<view class="top">
 				<view class="tag"># {{parseInt(qList[currentQuestion].id)+1}}  
-					<text v-if="this.type=='single'">单选题</text>
-					<text v-if="this.type=='multi'">多选题</text>
+					<text v-if="type=='single'">单选题</text>
+					<text v-if="type=='multi'">多选题</text>
 				</view>
 				<view class="iconList">
 					<span class="iconfont">&#xe6e5;</span>
@@ -45,25 +45,28 @@
 			<!-- 页面主体 -->
 			<view class="subject">{{qList[currentQuestion].subject}}</view>
 			<!-- 单选 -->
-			<view class="ansList" v-if="this.type!='multi'">
+			<view class="ansList" v-if="type!='multi'">
 				<view class="ansOpt" 
-				v-for="(item,index) in qList[currentQuestion].optList.filter(item => item!= null)" 
+				v-for="(item,index) in qList[currentQuestion].optList" 
 				@click="handleAnsClick(index)"
-				:style="randomOrder(index)"
-				:class="[{correct:hasAnswered&&answerIsRight(index)},{wrong:hasAnswered&&index==currentAnsOpt&&!currentAnswerIsRight}]" 
+				
+				:class="[{correct:hasAnswered&&index==qList[currentQuestion].answer}
+				,{wrong:hasAnswered&&index==currentAnsOpt&&!currentAnswerIsRight}]" 
 				>{{item}}</view>
+				<!-- :style="randomOrder(index)" -->
 			</view>
 			<!-- 多选 -->
-			<view class="ansList" v-if="this.type=='multi'">
+			<view class="ansList" v-if="type=='multi'">
 				<view class="ansOpt" 
-				v-for="(item,index) in qList[currentQuestion].optList.filter(item => item!= null)" 
+				v-for="(item,index) in qList[currentQuestion].optList" 
 				@click="handleMultiAnsClick(index)"
-				:style="randomOrder(index)"
+				
 				:class="[{active:currentMultiAnsOpt[index]===true}
 				,{correct:hasAnswered&&currentAnswerIsRight&&currentMultiAnsOpt[index]===true}
 				,{wrong:hasAnswered&&!currentAnswerIsRight&&currentMultiAnsOpt[index]===true}
 				]"
 				>{{item}}</view>
+				<!-- :style="randomOrder(index)" -->
 			</view>
 			<view class="btnList">
 				<view class="btnItem" 
@@ -71,7 +74,7 @@
 				@click="changeToPre"
 				>上一题</view>
 				<view class="btnItem" 
-				v-if="this.type=='multi'"
+				v-if="type=='multi'"
 				:class="{disabled:hasAnswered}"
 				@click="handleMultiSubmit"
 				>确定</view>
@@ -109,8 +112,13 @@
 					return opt == this.qList[this.currentQuestion].answer
 				}
 			},
+			currentQuestionOpt(i){
+				return function(opt){
+					return this.qList[this.currentQuestion].optList
+				}
+			},
 			currentAnswerIsRight(){
-				return this.currentAnsOpt == this.qList[this.currentQuestion].answer
+				return this.currentAnsOpt == this.qList[this.currentQuestion].answer 
 			},
 			correctMulti(){
 				return this.convertStrToArr(this.qList[this.currentQuestion].answer)
@@ -153,17 +161,20 @@
 					console.log(res.data.data)
 					console.log(from,to)
 					// for(let i=0; i<res.data.data.length; i++){
+					this.qList = []
 					for(let i=from; i<to; i++){
 						let temp = res.data.data[i].attributes
+						let optList =  [temp.option_a, temp.option_b, temp.option_c, temp.option_d, temp.option_e, temp.option_f, temp.option_g, temp.option_h].filter(item=>{return item!=null})
 						// 实例变量数组：保存题库信息
 						this.qList.push({
 							id: i,
 							qid: res.data.data[i].id,
 							subject: temp.subject,
-							optList: [ temp.option_a, temp.option_b, temp.option_c, temp.option_d, temp.option_e, temp.option_f, temp.option_g, temp.option_h ],
+							optList,
 							answer: temp.answer,
 							type: temp.type
 						})
+						
 						// 答题记录数组：保存正确答案
 						emptyAnswerRecord.push({
 							id: i,
@@ -223,8 +234,11 @@
 			},
 			// 切换到第i题
 			changeToQuestion(i){
+				console.log(i)
 				this.currentQuestion = i
 				this.type = this.qList[i].type
+				
+				// console.log(this.qList[this.currentQuestion])
 				// 判断是否为答过的题
 				if(this.aRecordList[i].myAnswer!=null){
 					this.currentAnsOpt = this.aRecordList[i].myAnswer
@@ -345,7 +359,7 @@
 	}
 	
 	/* page */
-	.container{padding: 30rpx; }
+	.container{padding: 160rpx 30rpx 0; }
 	
 	/* 顶部 */
 	.top{ height: 100rpx; display: flex; align-items: center; justify-content: space-between; }
@@ -370,7 +384,7 @@
 	.analysis ol{ padding-inline-start: 1em; }
 	
 	/* 弹出菜单 */
-	.maskMenu{padding: 30rpx; box-sizing: border-box;}
+	.maskMenu{padding: 160rpx 30rpx 0; box-sizing: border-box;}
 	.maskBtnList{ display: flex; }
 	.btnClose{ width: calc(26% + 16rpx); line-height: 60rpx; background-color: #333; color: #FFF; border-radius: 15rpx; text-align: center; margin-right: 2%; }
 	.qTitle{ margin: 30rpx 0 20rpx; }

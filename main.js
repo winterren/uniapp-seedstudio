@@ -4,7 +4,7 @@ import App from './App'
 import Vue from 'vue'
 Vue.config.productionTip = false
 
-Vue.prototype.$url = "http://10.4.64.197:1337/"
+Vue.prototype.$url = "http://192.168.13.63:1337/"
 
 App.mpType = 'app'
 const app = new Vue({

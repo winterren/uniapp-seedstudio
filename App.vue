@@ -13,7 +13,7 @@
 </script>
 
 <style>
-	:root{
+	page{
 		--studioBg: #FDFAED;
 		--studioGreen: #3ad6b1;
 	}

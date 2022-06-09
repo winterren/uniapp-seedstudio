@@ -11,9 +11,9 @@
             "path" : "pages/about/about",
             "style" :                                                                                    
             {
-                "navigationBarTitleText": "团队成员",
+                "navigationBarTitleText": "",
                 "enablePullDownRefresh": false,
-				"navigationBarBackgroundColor":" #3ad6b1"
+				"navigationBarBackgroundColor":"#3ad6b1"
             }
             
         },
@@ -24,7 +24,7 @@
 		    {
 		        "navigationBarTitleText": "练习模式",
 		        "enablePullDownRefresh": false,
-				"navigationBarBackgroundColor":" #FDFAED"
+				"navigationBarBackgroundColor":"#FDFAED"
 		    }
 		},
 		{
@@ -47,7 +47,7 @@
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
-		"navigationBarTitleText": "uni-app",
+		"navigationBarTitleText": "Seed Studio",
 		"navigationBarBackgroundColor": "#F8F8F8",
 		"backgroundColor": "#F8F8F8"
 	}

@@ -26,42 +26,42 @@
 		data() {
 			return {
 				memberList: [
-					{ name:"任远", tag:"团队教师", intro:"指导教师",img:"/static/img/about/avatar-teacher-ry.JPG" },
+					{ name:"任远", tag:"团队教师", intro:"指导教师",img:"/static/img/about/avatar-teacher-ry.jpg" },
 					{ 
 						name:"包宸嘉", 
 						tag:"2018级学生", 
 						intro:"前端技术栈：HTML/CSS/JS/Vue<br/>后端技术栈：Java/NodeJS/ASP",
-						img:"/static/img/about/avatar-18-bcj.JPG" ,
+						img:"/static/img/about/avatar-18-bcj.jpg" ,
 					},
 					{
 						name:"付禹辰", 
 						tag:"2018级学生", 
 						intro:"前端技术栈：HTML/CSS/JS/Vue<br/>后端技术栈：Java/NodeJS/ASP",
-						img:"/static/img/about/avatar-18-fyc.JPG" ,
+						img:"/static/img/about/avatar-18-fyc.jpg" ,
 					},
 					{
 						name:"刘峻豪", 
 						tag:"2018级学生", 
 						intro:"前端技术栈：HTML/CSS/JS/Vue<br/>后端技术栈：Java/NodeJS/ASP",
-						img:"/static/img/about/avatar-19-ljh.JPG" ,
+						img:"/static/img/about/avatar-19-ljh.jpg" ,
 					},
 					{
 						name:"孟子杰", 
 						tag:"2018级学生", 
 						intro:"前端技术栈：HTML/CSS/JS/Vue<br/>后端技术栈：Java/NodeJS/ASP",
-						img:"/static/img/about/avatar-19-mzj.JPG" ,
+						img:"/static/img/about/avatar-19-mzj.jpg" ,
 					},
 					{
 						name:"胡俊杰", 
 						tag:"2018级学生", 
 						intro:"前端技术栈：HTML/CSS/JS/Vue<br/>后端技术栈：Java/NodeJS/ASP",
-						img:"/static/img/about/avatar-19-hjj.JPG" ,
+						img:"/static/img/about/avatar-19-hjj.jpg" ,
 					},
 					{
 						name:"陈志豪", 
 						tag:"2018级学生", 
 						intro:"前端技术栈：HTML/CSS/JS/Vue<br/>后端技术栈：Java/NodeJS/ASP",
-						img:"/static/img/about/avatar-19-czh.JPG" ,
+						img:"/static/img/about/avatar-19-czh.jpg" ,
 					},
 
 				]
@@ -74,7 +74,7 @@
 </script>
 
 <style>
-	.container{padding-top: 30rpx;}
+	.container{padding-top: 30rpx; padding-bottom: 30rpx;}
 
 	.title{ padding: 60rpx 30rpx 90rpx; font-size: 40rpx; font-weight: normal; letter-spacing: 10rpx; text-align: center; color: #333;} 
 	.title text{ font-weight: bold; }
@@ -89,7 +89,7 @@
 	
 	/* bg */
 	.bg{ width: 100%; height: 100vh; background-color: var(--studioBg); position: fixed; top: 0; left: 0; z-index: -10;}
-	.bg-green{  width: 100%; height: 500rpx; background-color: var(--studioGreen); position: absolute; top: 0; left: 0;  }
+	.bg-green{  width: 100%; height: 400rpx; background-color: var(--studioGreen); position: absolute; top: 0; left: 0;  }
 	.bg-bubbles {
 	  position: absolute;
 	  top: 0;

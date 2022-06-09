@@ -144,12 +144,13 @@
 	}
 	.cardItemTitle{
 		margin: 10rpx 20rpx 0;
-		font-size: 34rpx;
+		font-size: 28rpx;
 		line-height: 50rpx;
 	}
 	.cardItemIntro{
 		margin: 10rpx 20rpx 20rpx;
 		color: #888;
+		font-size: 24rpx;
 	}
 	
 	/* 宫格 */
@@ -185,7 +186,7 @@
 		left: 0;
 		top: 0;
 		background-color: #F5F5F5;
-		background-color: #FDFAED;
+		background-color: var(--studioBg);
 		z-index: -30;
 	}
 	.wave-bg {

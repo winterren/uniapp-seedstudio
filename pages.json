@@ -1,0 +1,54 @@
+{
+	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
+		{
+			"path": "pages/index/index",
+			"style": {
+				"navigationBarTitleText": "萌芽工作室",
+				"navigationStyle": "custom"
+			}
+		},
+        {
+            "path" : "pages/about/about",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "团队成员",
+                "enablePullDownRefresh": false,
+				"navigationBarBackgroundColor":" #3ad6b1"
+            }
+            
+        },
+		// 大赛习题
+		{
+		    "path" : "pages/quiz/practice/index",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "练习模式",
+		        "enablePullDownRefresh": false,
+				"navigationBarBackgroundColor":" #FDFAED"
+		    }
+		},
+		{
+		    "path" : "pages/quiz/practice/practice",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "练习模式",
+		        "enablePullDownRefresh": false,
+				"navigationStyle":"custom"
+		    }
+		},
+		{
+		    "path" : "pages/quiz/practice/score",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "得分",
+		        "enablePullDownRefresh": false
+		    }
+		}
+    ],
+	"globalStyle": {
+		"navigationBarTextStyle": "black",
+		"navigationBarTitleText": "uni-app",
+		"navigationBarBackgroundColor": "#F8F8F8",
+		"backgroundColor": "#F8F8F8"
+	}
+}

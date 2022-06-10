@@ -94,6 +94,12 @@
 		methods: {
 			change(e) {
 				let {index} = e.detail
+				if(this.list[index].url==''){
+					uni.showToast({
+						icon:"none",
+						title:"该功能暂未开放！敬请期待！"
+					})
+				}
 				uni.navigateTo({
 					url:this.list[index].url
 				})

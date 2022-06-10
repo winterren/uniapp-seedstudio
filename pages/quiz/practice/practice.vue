@@ -156,7 +156,7 @@
 			
 			//请求题库
 			uni.request({
-				url: this.$url+'api/exam-questions?populate=exam_category&filters[exam_category]['+option.cate+']=1',
+				url: this.$url+'api/exam-questions?populate=exam_category&filters[exam_category][id]='+option.cate+'&sort[0]=id&pagination[pageSize]=100',
 				success: (res) => {
 					console.log(res.data.data)
 					console.log(from,to)
@@ -174,7 +174,6 @@
 							answer: temp.answer,
 							type: temp.type
 						})
-						
 						// 答题记录数组：保存正确答案
 						emptyAnswerRecord.push({
 							id: i,

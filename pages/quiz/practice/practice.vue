@@ -4,47 +4,71 @@
 			<zero-loading type="love"></zero-loading>
 		</view>
 		<view class="container" v-if="ready">
+			<uni-popup ref="popup" type="dialog">
+				<uni-popup-dialog mode="base" :duration="2000" :before-close="true" @close="dialogClose()" @confirm="dialogConfirm(dialogType)">{{dialog[dialogType]}}</uni-popup-dialog>
+			</uni-popup>
+			
 			<!-- 抽屉 -->
 			<uni-drawer ref="showMenu" mode="right" :mask-click="true" :width="300">
 				<scroll-view class="maskMenu" style="height: 100%;" scroll-y="true" >
 					<view class="maskBtnList">
 						
-						<view class="btnClose">重置</view>
-						<view class="btnClose">交卷</view>
-						<navigator url="/pages/index/index" open-type="redirect"  class="btnClose">
-							<view>退出</view>
-						</navigator>
+						<view class="btnMaskMenu" @click="handleReset">重置</view>
+						<view class="btnMaskMenu" @click="handleScore">交卷</view>
+						<view class="btnMaskMenu" @click="handleQuit">退出</view>
 						
 					</view>
 				
 					<view class="qView">
-						<view class="qTitle">题目列表</view>
+						<view class="qTitle" v-if="singleNo.length>0">单选题</view>
+						<view class="qList">
+							<view class="qItem"
+							v-for="(item,index) in singleNo" 
+							:key="index"
+							:class="[{correct:aRecordList[item.id].correct==true},{wrong:aRecordList[item.id].correct==false}]"
+							@click="switchIdToIndex(item.qid)"
+							>{{ item.qid-0+1 }}</view>
+						</view>
+						<view class="qTitle" v-if="multiNo.length>0">多选题</view>
 						<view class="qList">
 							<view class="qItem" 
-							v-for="(item,index) in aRecordList" 
+							v-for="(item,index) in multiNo" 
 							:key="index"
-							:class="[{correct:item.correct===true},{wrong:item.correct===false}]"
-							@click="changeToQuestion(index)"
-							>{{ parseInt(item.id)+1}}</view>
+							:class="[{correct:aRecordList[item.id].correct==true},{wrong:aRecordList[item.id].correct==false}]"
+							@click="switchIdToIndex(item.qid)"
+							>{{ item.qid-0+1 }}</view>
+						</view>
+						<view class="qTitle" v-if="tfNo.length>0">判断题</view>
+						<view class="qList">
+							<view class="qItem" 
+							v-for="(item,index) in tfNo" 
+							:key="index"
+							:class="[{correct:aRecordList[item.id].correct==true},{wrong:aRecordList[item.id].correct==false}]"
+							@click="switchIdToIndex(item.qid)"
+							>{{ item.qid-0+1 }}</view>
 						</view>
 					</view>
 				</scroll-view>
 			</uni-drawer>
 			<!-- 页面顶部 -->
 			<view class="top">
-				<view class="tag"># {{parseInt(qList[currentQuestion].id)+1}}  
-					<text v-if="type=='single'">单选题</text>
-					<text v-if="type=='multi'">多选题</text>
+				<view class="tag"># {{parseInt(qList[currentQuestion].qid)+1}}  
+					<text v-if="type==='single'">单选题</text>
+					<text v-if="type==='multi'">多选题</text>
+					<text v-if="type==='tf'">判断题</text>
 				</view>
 				<view class="iconList">
-					<span class="iconfont">&#xe6e5;</span>
+					<!-- 图标：笔记 -->
+					<!-- <span class="iconfont">&#xe6e5;</span> -->
+					<!-- 图标：收藏 -->
 					<span class="iconfont">&#xe6eb;</span>
+					<!-- 图标：菜单 -->
 					<span class="iconfont" @click="showMenu">&#xe6ef;</span>
 				</view>
 			</view>
 			<!-- 页面主体 -->
 			<view class="subject">{{qList[currentQuestion].subject}}</view>
-			<!-- 单选 -->
+			<!-- （不是多选）单选/判断 -->
 			<view class="ansList" v-if="type!='multi'">
 				<view class="ansOpt" 
 				v-for="(item,index) in qList[currentQuestion].optList" 
@@ -83,9 +107,16 @@
 				@click="changeToPost"
 				>下一题</view>
 			</view>
-			<view class="analysis" v-if="hasAnswered&&!currentAnswerIsRight&&type=='multi'">
-				正确答案：<ol><li v-for="(item,index) in qList[currentQuestion].optList" v-if="correctMulti[index]">{{item}};</li></ol>
+			<view class="analysis wrong" v-if="hasAnswered&&!currentAnswerIsRight&&type!='multi'">
+				正确答案为：<li v-for="(item,index) in qList[currentQuestion].optList" v-if="index==qList[currentQuestion].answer" style="list-style: none;">{{item}}</li>
 			</view>
+			<view class="analysis wrong" v-if="hasAnswered&&!currentAnswerIsRight&&type=='multi'">
+				正确答案为：<ol><li v-for="(item,index) in qList[currentQuestion].optList" v-if="correctMulti[index]">{{item}};</li></ol>
+			</view>
+			<view class="analysis right" v-if="hasAnswered&&currentAnswerIsRight">
+				回答正确
+			</view>
+			
 		</view>
 	</view>
 </template>
@@ -96,6 +127,7 @@
 			return {
 				ready:false,
 				qList:[],
+				emptyAnswerRecord:[],
 				aRecordList:[],
 				currentQuestion: 0,
 				currentAnsOpt: null,
@@ -104,6 +136,17 @@
 				currentMultiAnsOpt: [],
 				randomAnswer: false,
 				randomSeed: 3,
+				page:1,
+				total:null,
+				totalTemp:null,
+				singleNo:[],
+				multiNo:[],
+				tfNo:[],
+				dialog:{
+					score: "您有未提交的题目，是否确认交卷？",
+					reset: "您本次作答会被清空，是否要重置吗？"
+				},
+				dialogType:null, //score
 			}
 		},
 		computed:{
@@ -144,73 +187,183 @@
 			}
 		},
 		onLoad(option){
-			let cate = option.cate
-			let from = option.from
-			let to = option.to
-			let rq = option.rq
-			let ra = option.ra
 			
-			let emptyAnswerRecord = []
-			
+			// this.loadAllPage(
+			// 	this.$url+'api/exam-questions?populate=exam_category&filters[exam_category][id]='+option.cate+'&sort[0]=id&pagination[pageSize]=100&pagination[page]='
+			// 	,function(){console.log("ok")}
+			// )
+			this.total = option.to - option.from + 1
+			this.totalTemp = this.total
+			console.log(this.total)
+			this.qList = []
+			this.emptyAnswerRecord = []
 			this.randomSeed = Math.random()*2 + 2
+			this.getData(option)
 			
-			//请求题库
-			uni.request({
-				url: this.$url+'api/exam-questions?populate=exam_category&filters[exam_category][id]='+option.cate+'&sort[0]=id&pagination[pageSize]=100',
-				success: (res) => {
-					console.log(res.data.data)
-					console.log(from,to)
-					// for(let i=0; i<res.data.data.length; i++){
-					this.qList = []
-					for(let i=from; i<to; i++){
-						let temp = res.data.data[i].attributes
-						let optList =  [temp.option_a, temp.option_b, temp.option_c, temp.option_d, temp.option_e, temp.option_f, temp.option_g, temp.option_h].filter(item=>{return item!=null})
-						// 实例变量数组：保存题库信息
-						this.qList.push({
-							id: i,
-							qid: res.data.data[i].id,
-							subject: temp.subject,
-							optList:optList,
-							answer: temp.answer,
-							type: temp.type
-						})
-						// 答题记录数组：保存正确答案
-						emptyAnswerRecord.push({
-							id: i,
-							qid: res.data.data[i].id,
-							answer: temp.answer,
-							myAnswer: null,
-							correct: null,
-							type:temp.type
-						})
-					}
-					// rq：题目乱序
-					if(rq=='true'){
-						let stack1 = [];
-						let stack2 = [];
-						while (this.qList.length) {
-						    //Math.random()：返回 [0,1) 之间的一个随机数
-						    let index = parseInt(Math.random() * this.qList.length);  // 利用数组长度生成随机索引值
-						    stack1.push(this.qList[index]);  // 将随机索引对应的数组元素添加到新的数组中
-						    stack2.push(emptyAnswerRecord[index]);  // 将随机索引对应的数组元素添加到新的数组中
-						    this.qList.splice(index, 1);  // 删除原数组中随机生成的元素
-						    emptyAnswerRecord.splice(index, 1);  // 删除原数组中随机生成的元素
-						}
-						this.qList=stack1
-						emptyAnswerRecord=stack2
-					}
-					//选项乱序
-					this.randomAnswer = (ra=='true')
-					//请求答题记录：存入本地存储
-					this.aRecordList = emptyAnswerRecord
-					this.syncRecordList()
-					this.ready = true
-					// initialize
-					this.type = this.qList[0].type
-				}
-			})
+
+				
+			
 		},
 		methods: {
+			getData(option){
+				let cate = option.cate
+				let from = option.from - 1
+				let to = option.to - 0 + 1
+				let rq = option.rq
+				let ra = option.ra
+				
+				//请求题库
+				uni.request({
+					url: this.$url+'/api/exam-questions?populate=exam_category'
+					+'&filters[exam_category][id]='+option.cate
+					+'&filters[id][$gt]='+from
+					+'&filters[id][$lt]='+to
+					+'&sort[0]=id'
+					+'&pagination[pageSize]=100'
+					+'&pagination[page]='+this.page,
+					success: (res) => {
+						if(res.data.data.length != 0){
+							console.log(res.data.data)
+							if(this.total>100){
+								this.totalTemp = 100
+								this.total -= 100
+							}else{
+								this.totalTemp = this.total - 1
+							}
+							for(let i=0; i<this.totalTemp; i++){
+								let temp = res.data.data[i].attributes
+								let optList =  [temp.option_a, temp.option_b, temp.option_c, temp.option_d, temp.option_e, temp.option_f, temp.option_g, temp.option_h].filter(item=>{return item!=null})
+								// 实例变量数组：保存题库信息
+								this.qList.push({
+									id: i+(this.page-1)*100,
+									// nid: i+(this.page-1)*100,
+									qid: res.data.data[i].id-1,
+									subject: temp.subject,
+									optList:optList,
+									answer: temp.answer,
+									type: temp.type
+								})
+								// 答题记录数组：保存正确答案
+								this.emptyAnswerRecord.push({
+									id: i+(this.page-1)*100,
+									// nid: i+(this.page-1)*100,
+									qid: res.data.data[i].id-1,
+									answer: temp.answer,
+									myAnswer: null,
+									correct: null,
+									type:temp.type
+								})
+							}
+							this.page++
+							this.getData(option)
+						}else{
+							// rq：题目乱序
+							if(rq=='true'){
+								let stack1 = [];
+								let stack2 = [];
+
+								while (this.qList.length) {
+								    //Math.random()：返回 [0,1) 之间的一个随机数
+								    let index = parseInt(Math.random() * this.qList.length);  // 利用数组长度生成随机索引值
+								    stack1.push(this.qList[index]);  // 将随机索引对应的数组元素添加到新的数组中
+								    stack2.push(this.emptyAnswerRecord[index]);  // 将随机索引对应的数组元素添加到新的数组中
+								    this.qList.splice(index, 1);  // 删除原数组中随机生成的元素
+								    this.emptyAnswerRecord.splice(index, 1);  // 删除原数组中随机生成的元素
+									
+								}
+								this.qList=stack1
+								this.emptyAnswerRecord=stack2
+								console.log(this.qList[1])
+								console.log(this.emptyAnswerRecord[1])
+							}			
+									
+							for(let i=0; i<this.qList.length; i++){
+								this.qList[i].id = i
+								this.emptyAnswerRecord[i].id = i
+								console.log(this.qList[i].id+'|'+this.qList[i].qid)
+							}
+							
+							// 排序：单选->多选->判断
+							let stackSingleQ = [];
+							let stackSingleA = [];
+							let stackMultiQ = [];
+							let stackMultiA = [];
+							let stackTfQ = [];
+							let stackTfA = [];
+							let singleId = 0
+							let multiId = 0
+							let tfId = 0
+							while(this.qList.length){
+								let qTemp = this.qList.shift()
+								let aTemp = this.emptyAnswerRecord.shift()
+								
+								
+								if(qTemp.type==="single"){
+									stackSingleQ.push(qTemp)
+									stackSingleA.push(aTemp)
+									this.singleNo.push({id:singleId,qid:qTemp.qid})
+									singleId++
+								}
+								if(qTemp.type==="multi"){
+									stackMultiQ.push(qTemp)
+									stackMultiA.push(aTemp)
+									this.multiNo.push({id:multiId,qid:qTemp.qid})
+									multiId++
+								}
+								if(qTemp.type==="tf"){
+									stackTfQ.push(qTemp)
+									stackTfA.push(aTemp)
+									this.tfNo.push({id:tfId,qid:qTemp.qid})
+									tfId++
+								}
+							}
+							console.log(singleId,multiId,tfId)
+							
+							this.qList=[...stackSingleQ,...stackMultiQ,...stackTfQ]
+							this.emptyAnswerRecord=[...stackSingleA,...stackMultiA,...stackTfA]
+							
+							for(let i=0;i<this.multiNo.length;i++){
+								this.multiNo[i].id = singleId - 0 + i 
+							}
+							
+							for(let i=0; i<this.qList.length; i++){
+								this.qList[i].id = i
+								this.emptyAnswerRecord[i].id = i
+								console.log(this.qList[i].id+'|'+this.qList[i].qid)
+							}
+							
+							// for(let i=0;i<this.qList.length;i++){
+							// 	let qTemp = this.qList[i]
+							// 	let aTemp = this.aList[i]
+							// 	if(qTemp.type==="single"){
+							// 		this.singleNo.push({id:qTemp.id,qid:qTemp.qid})
+							// 	}
+							// 	if(qTemp.type==="multi"){
+							// 		this.multiNo.push({id:qTemp.id,qid:qTemp.qid})
+							// 	}
+							// 	if(qTemp.type==="tf"){
+							// 		this.tfNo.push({id:qTemp.id,qid:qTemp.qid})
+							// 	}
+							// }
+
+							
+							
+							
+							//选项乱序
+							this.randomAnswer = (ra=='true')
+							
+							//请求答题记录：存入本地存储
+							this.aRecordList = [].concat(this.emptyAnswerRecord)
+							this.syncRecordList()
+							this.ready = true
+							// initialize
+							this.type = this.qList[0].type
+						}
+					},
+					fail: () => {
+					}
+				})
+			},
 			// 模态菜单
 			showMenu() {
 				console.log("show menu")
@@ -231,9 +384,13 @@
 				this.aRecordList[this.currentQuestion].correct=this.currentAnswerIsRight
 				this.syncRecordList()
 			},
+			switchIdToIndex(i){
+				let index = this.qList.indexOf( this.qList.filter(item=>{return item.qid==i})[0] )
+				this.changeToQuestion(index)
+				console.log(index)
+			},
 			// 切换到第i题
 			changeToQuestion(i){
-				console.log(i)
 				this.currentQuestion = i
 				this.type = this.qList[i].type
 				
@@ -276,7 +433,7 @@
 			},
 			// 同步答题记录到存储
 			syncRecordList(){
-				uni.setStorageSync("practice",this.aRecordList)
+				uni.setStorageSync("exam_practice",this.aRecordList)
 			},
 			// 多选题答案
 			handleMultiAnsClick(index){
@@ -337,7 +494,97 @@
 			        arr.splice(index, 1);  // 删除原数组中随机生成的元素
 			    }
 			    return stack;
-			}
+			},
+			//交卷
+			handleScore(){
+				// 判断是否一题未答
+				if(this.aRecordList.filter((item)=>{return item.correct!=null}).length==0){
+					uni.showToast({
+						icon:"none",
+						title:"请先答题再交卷，不要着急哦"
+					})
+					return;
+				}
+				// 判断是否有未答的题
+				if(this.aRecordList.filter((item)=>{return item.correct==null}).length>0){
+					console.log(1)
+					this.$refs.showMenu.close();
+					this.dialogOpen('score')
+					return;
+				}
+				uni.navigateTo({
+					url: './score'
+				})
+			},
+			handleQuit(){
+				uni.navigateTo({
+					url: '../../index/index'
+				})
+				// uni.navigateBack({
+				// 	delta: 1
+				// })
+			},
+			handleReset(){
+				this.$refs.showMenu.close();
+				this.dialogOpen('reset')
+			},
+			// 读取所有分页的数据并存储在数组newList中
+			loadAllPage(url,aaa) {
+				uni.request({
+					url: url+this.page,
+					method: 'GET',
+					success:(res)=> {
+						this.newList = [...this.newList,...res.data.data]
+						console.log(`第${this.page}个请求执行完毕：`,this.newList)
+						console.log('该数组的长度为',res.data.data.length)
+						if(res.data.data.length != 0){
+							this.page++
+							this.loadAllPage()
+						}
+					},
+					fail: (err) => {
+						aaa()
+					}
+				})
+			},
+			dialogOpen(dialogType) {
+				this.dialogType = dialogType
+				this.$refs.popup.open()
+			},
+			/**
+			 * 点击取消按钮触发
+			 * @param {Object} done
+			 */
+			dialogClose() {
+				// TODO 做一些其他的事情，before-close 为true的情况下，手动执行 close 才会关闭对话框
+				// ...
+				this.$refs.popup.close()
+			},
+			/**
+			 * 点击确认按钮触发
+			 * @param {Object} done
+			 * @param {Object} value
+			 */
+			dialogConfirm(dialogType) {
+				console.log(dialogType)
+				
+				this.$refs.popup.close()
+				if(dialogType=='score'){
+					uni.navigateTo({
+						url: './score'
+					})
+				}
+				if(dialogType=='reset'){
+					// this.aRecordList.forEach((item)=>{
+					// 	item.myAnswer= null,
+					// 	item.correct= null
+					// })
+					// this.changeToQuestion(0)
+					uni.navigateBack({
+						delta: 0
+					})
+				}
+			},
 
 		}
 	}
@@ -365,7 +612,7 @@
 	.tag{ font-size: 46rpx; font-weight: bold; color: #333;}
 	.tag text{ font-size: 28rpx; color: #bbb; margin-left: 20rpx; }
 	.iconList{ font-size: 60rpx; color: #bbb;}
-	.iconfont{ margin-left: 20rpx; }
+	.iconfont{ margin-left: 10rpx; padding:12rpx ; }
 	
 	.subject{ font-size: 28rpx; line-height: 44rpx; margin: 20rpx 0; }
 	.ansList{ display: flex; flex-direction: column; }
@@ -375,17 +622,19 @@
 	.ansOpt.correct{ background-color: #3ad6b1 !important; color: #FFF;}
 	.ansOpt.wrong{ background-color: #ff7a7e !important; color: #FFF; }
 	
-	.btnList{height: 80rpx; display: flex; justify-content: space-between; padding-top: 20rpx;}
-	.btnItem{  }
+	.btnList{height: 80rpx; display: flex; justify-content: space-between; padding: 20rpx 0;}
+	.btnItem{ height: 80rpx; line-height: 80rpx; width: 160rpx; text-align: center; }
 	.btnItem.disabled{ color: #bbb;}
 	
-	.analysis{padding: 20rpx; width: 100%; line-height: 50rpx; background-color: #3ad6b1; border-radius: 15rpx; box-sizing: border-box; color: #FFF;}
+	.analysis{padding: 20rpx; width: 100%; line-height: 50rpx; border-radius: 15rpx; box-sizing: border-box; color: #FFF;}
 	.analysis ol{ padding-inline-start: 1em; }
+	.analysis.wrong{background-color: var(--studioRed);}
+	.analysis.right{background-color: var(--studioGreen);}
 	
 	/* 弹出菜单 */
 	.maskMenu{padding: 30rpx ; box-sizing: border-box;}
 	.maskBtnList{ display: flex; }
-	.btnClose{ width: calc(26% + 16rpx); line-height: 60rpx; background-color: #333; color: #FFF; border-radius: 15rpx; text-align: center; margin-right: 2%; }
+	.btnMaskMenu{ width: calc(26% + 16rpx); line-height: 80rpx; background-color: #333; color: #FFF; border-radius: 15rpx; text-align: center; margin-right: 2%; margin-top:25rpx; }
 	.qTitle{ margin: 30rpx 0 20rpx; }
 	.qList{ display: flex; flex-wrap: wrap; }
 	.qItem{ font-size: 24rpx; width: 12%; line-height: 60rpx; color: #aaa; border-radius: 15rpx; border: 4rpx solid #aaa;text-align: center;

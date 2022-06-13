@@ -1,22 +1,31 @@
 <template>
-	<view class="container">
-		<view class="bg">
-			<view class="bg-green">
-				<ul class="bg-bubbles">
-					<li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li>
-				</ul>
-			</view>
+	<view>
+		<view v-if="!ready" class="bg">
+			<zero-loading type="love"></zero-loading>
 		</view>
-		<view class="title"><text>团队</text>成员</view>
-		<view class="card" v-for="(item,index) in memberList">
-			<view class="card-left">
-				<image class="avatar" :src="item.img" mode=""></image>
+		<view class="container" v-if="ready">
+			<view class="bg">
+				<view class="bg-green">
+					<ul class="bg-bubbles">
+						<li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li>
+					</ul>
+				</view>
 			</view>
-			<view class="card-right">
-				<view class="card-right-title"><text class="name">{{item.name}} </text>	<text class="tag">{{item.tag}}</text></view>
-				<view class="card-right-intro" v-html="item.intro"></view>
+			<view class="title"><text>团队</text>介绍</view>
+			<view class="card team">
+				<image src="https://www.seedstudio.cn:1437/uploads/team_01_f639387028.jpg?updated_at=2022-06-13T02:25:25.268Z" mode="aspectFill"></image>
+				<p>萌芽工作室，2022年成立于徐州财校信息技术系，致力于为校园提供小程序开发、公众号建设、网站建设与维护等服务。我们的愿景是让代码成为一种生活方式，萌生出美好的作品。</p>
 			</view>
-			
+			<view class="card" v-for="(item,index) in memberList">
+				<view class="card-left">
+					<image class="avatar" :src="item.img" mode=""></image>
+				</view>
+				<view class="card-right">
+					<view class="card-right-title"><text class="name">{{item.name}} </text>	<text class="tag">{{item.tag}}</text></view>
+					<view class="card-right-intro" v-html="item.intro"></view>
+				</view>
+				
+			</view>
 		</view>
 	</view>
 </template>
@@ -25,47 +34,26 @@
 	export default {
 		data() {
 			return {
-				memberList: [
-					{ name:"任远", tag:"团队教师", intro:"指导教师",img:"/static/img/about/avatar-teacher-ry.jpg" },
-					{ 
-						name:"包宸嘉", 
-						tag:"2018级学生", 
-						intro:"前端技术栈：HTML/CSS/JS/Vue<br/>后端技术栈：Java/NodeJS/ASP",
-						img:"/static/img/about/avatar-18-bcj.jpg" ,
-					},
-					{
-						name:"付禹辰", 
-						tag:"2018级学生", 
-						intro:"前端技术栈：HTML/CSS/JS/Vue<br/>后端技术栈：Java/NodeJS/ASP",
-						img:"/static/img/about/avatar-18-fyc.jpg" ,
-					},
-					{
-						name:"刘峻豪", 
-						tag:"2018级学生", 
-						intro:"前端技术栈：HTML/CSS/JS/Vue<br/>后端技术栈：Java/NodeJS/ASP",
-						img:"/static/img/about/avatar-19-ljh.jpg" ,
-					},
-					{
-						name:"孟子杰", 
-						tag:"2018级学生", 
-						intro:"前端技术栈：HTML/CSS/JS/Vue<br/>后端技术栈：Java/NodeJS/ASP",
-						img:"/static/img/about/avatar-19-mzj.jpg" ,
-					},
-					{
-						name:"胡俊杰", 
-						tag:"2018级学生", 
-						intro:"前端技术栈：HTML/CSS/JS/Vue<br/>后端技术栈：Java/NodeJS/ASP",
-						img:"/static/img/about/avatar-19-hjj.jpg" ,
-					},
-					{
-						name:"陈志豪", 
-						tag:"2018级学生", 
-						intro:"前端技术栈：HTML/CSS/JS/Vue<br/>后端技术栈：Java/NodeJS/ASP",
-						img:"/static/img/about/avatar-19-czh.jpg" ,
-					},
-
-				]
+				memberList: [],
+				ready: false
 			}
+		},
+		onLoad(){
+			uni.request({
+				url:"https://www.seedstudio.cn:1437/api/team-members?populate=*",
+				success: (res) => {
+					console.log(res.data.data)
+					res.data.data.forEach((item)=>{
+						this.memberList.push({
+							name:item.attributes.name,
+							tag:item.attributes.tag,
+							intro:item.attributes.intro,
+							img: this.$url + item.attributes.img.data.attributes.url
+						})
+					})
+					this.ready=true
+				}
+			})
 		},
 		methods: {
 			
@@ -74,10 +62,18 @@
 </script>
 
 <style>
+
 	.container{padding-top: 30rpx; padding-bottom: 30rpx;}
 
 	.title{ padding: 60rpx 30rpx 90rpx; font-size: 40rpx; font-weight: normal; letter-spacing: 10rpx; text-align: center; color: #333;} 
 	.title text{ font-weight: bold; }
+	
+	/* 头部整体介绍 */
+	.card.team{ display: block;  }
+	.card.team image{ width: 100%;  opacity: 0.8;}
+	.card.team p{ margin-top: 20rpx; text-indent: 48rpx; font-size: 24rpx; line-height: 38rpx; }
+
+	
 	.card{ background-color: rgba(255,255,255,.9); margin: 30rpx 30rpx 0; padding: 30rpx; border: 1rpx solid #D2D2D2; display: flex; align-items: center;}
 	.card-left{}
 	.card-left .avatar{ width: 150rpx; height: 150rpx; border-radius: 50%;}

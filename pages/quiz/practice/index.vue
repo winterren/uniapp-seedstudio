@@ -93,7 +93,7 @@
 		methods: {
 			getCate(){
 				uni.request({
-					url:this.$url+"api/exam-categories?filters[active]=true",
+					url:this.$url+"/api/exam-categories?filters[active]=true",
 					success: (res) => {
 						console.log(res.data.data)
 						res.data.data.forEach((item)=>{
@@ -110,7 +110,7 @@
 			},
 			getFromTo(){
 				uni.request({
-					url: this.$url+"api/exam-questions?populate=exam_category&filters[exam_category][id]="+this.cateArray[this.cateIndex].id,
+					url: this.$url+"/api/exam-questions?populate=exam_category&filters[exam_category][id]="+this.cateArray[this.cateIndex].id,
 					success: (res) => {
 						// 防呆
 						if( res.data.meta.pagination.total == 0 ){ uni.showToast({icon: "none",title: "该题库为空"});return; }

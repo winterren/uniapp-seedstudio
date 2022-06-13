@@ -55,7 +55,7 @@
 				{
 					img: '/static/c1.png',
 					text: '技术博客',
-					url:'',
+					url:'/pages/blog/index',
 					type: "chat"
 				},
 				{
@@ -72,13 +72,13 @@
 				},
 				{
 					img: '/static/c4.png',
-					text: '专题栏目',
+					text: '2023毕设',
 					url:'',
-					type: "email"
+					type: "paperplane"
 				},
 				{
 					img: '/static/c4.png',
-					text: '团队成员',
+					text: '团队介绍',
 					url:'/pages/about/about',
 					type: "staff"
 				},
@@ -90,6 +90,12 @@
 		},
 		onReady() {
 			this.ready=true
+		},
+		onShareAppMessage(){
+			
+		},
+		onShareTimeline(){
+			
 		},
 		methods: {
 			change(e) {

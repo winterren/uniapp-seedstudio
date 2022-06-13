@@ -1,4 +1,7 @@
 {
+	"easycom": {
+		"^u-(.*)": "@/uview-ui/components/u-$1/u-$1.vue"
+	},
 	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
 		{
 			"path": "pages/index/index",
@@ -33,7 +36,8 @@
 		    {
 		        "navigationBarTitleText": "练习模式",
 		        "enablePullDownRefresh": false,
-				"navigationStyle":"custom"
+				"navigationBarBackgroundColor":"#fff"
+				// "navigationStyle":"custom"
 		    }
 		},
 		{
@@ -41,7 +45,27 @@
 		    "style" :                                                                                    
 		    {
 		        "navigationBarTitleText": "得分",
-		        "enablePullDownRefresh": false
+		        "enablePullDownRefresh": false,
+				"navigationBarBackgroundColor":"#3ad6b1"
+		    }
+		},
+		// 技术博客博客
+		{
+		    "path" : "pages/blog/index",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "技术博客",
+		        "enablePullDownRefresh": false,
+				"navigationBarBackgroundColor":"#FDFAED"
+		    }
+		},
+		{
+		    "path" : "pages/blog/blogDetails",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "博客详情",
+		        "enablePullDownRefresh": false,
+				"navigationBarBackgroundColor":"#FDFAED"
 		    }
 		}
     ],

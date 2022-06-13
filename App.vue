@@ -9,6 +9,7 @@
 		onHide: function() {
 			console.log('App Hide')
 		}
+		
 	}
 </script>
 
@@ -16,6 +17,7 @@
 	page{
 		--studioBg: #FDFAED;
 		--studioGreen: #3ad6b1;
+		--studioRed: #ff7a7e;
 	}
 	
 	/*每个页面公共css */

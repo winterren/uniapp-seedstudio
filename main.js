@@ -4,7 +4,11 @@ import App from './App'
 import Vue from 'vue'
 Vue.config.productionTip = false
 
-Vue.prototype.$url = "http://192.168.13.63:1337/"
+// 引入 uView Js库
+import uView from "uview-ui"
+Vue.use(uView)
+
+Vue.prototype.$url = "https://www.seedstudio.cn:1437"
 
 App.mpType = 'app'
 const app = new Vue({

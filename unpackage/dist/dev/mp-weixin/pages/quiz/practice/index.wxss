@@ -1,0 +1,12 @@
+
+page{ 
+	background-color: var(--studioBg);
+}
+.container{ padding: 30rpx;
+}
+.formItem{ line-height: 100rpx; display: flex; align-items: center;}
+.formItemLeft{ width: 150rpx; flex: 0 0 150rpx; color: #333;}
+.formItemRight{ flex: 1 1 auto;}
+.picker{ background-color: #fff; color: #666; line-height: 70rpx; height: 70rpx; font-size: 28rpx; text-align: center; border: 1rpx solid #D2D2D2;}
+.btnStart{ width: 100%; line-height: 100rpx; background-color: var(--studioGreen); text-align: center; color: #FFF; margin-top: 50rpx;}
+

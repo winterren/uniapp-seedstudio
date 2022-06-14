@@ -1,0 +1,202 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* 页面 */
+page {
+	background-color: var(--studioBg); 
+	height: 100%;
+}
+.main{
+	background-color: var(--studioBg);
+}
+/* 分类 */
+.cate {
+	height: 60rpx;
+	width: 100%;
+	line-height: 60rpx;
+	padding: 0 30rpx;
+	position: fixed;
+	background-color: #fdfaed;
+	z-index: 2;
+}
+.cateItems {
+	font-size: 30rpx;
+	display: inline-block;
+	width: 200rpx;
+	text-align: center;
+	color: #939296;
+}
+.cateItemSelect {
+	color: var(--studioGreen);
+	font-size: 32rpx;
+	font-weight: bold;
+	border-bottom: 1rpx solid var(--studioGreen);
+}
+/* 分类置顶占位 */
+.catePlaceholder {
+	height: 60rpx;
+}
+/* 博客列表 */
+.blog {}
+.blogItems {
+	padding: 20rpx 10rpx;
+	margin: 0 30rpx;
+	border-bottom: 1rpx #ececec solid;
+}
+.title {
+	font-size: 34rpx;
+	line-height: 60rpx;
+}
+.info {
+	display: flex;
+	font-size: 24rpx;
+	color: #838383;
+}
+.user {
+	margin-right: 30rpx;
+}
+.time {}
+/* 文章数量 */
+.loadmore {
+	padding: 20rpx 0;
+}
+/* 页面为空 */
+.empty {
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	-webkit-transform: translate(-50%,-50%);
+	        transform: translate(-50%,-50%);
+	z-index: 1;
+	width: 100%;
+	height: 100%;
+}
+

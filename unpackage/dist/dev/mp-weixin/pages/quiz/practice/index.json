@@ -1,0 +1,8 @@
+{
+  "navigationBarTitleText": "练习模式",
+  "enablePullDownRefresh": false,
+  "navigationBarBackgroundColor": "#FDFAED",
+  "usingComponents": {
+    "zero-loading": "/uni_modules/zero-loading/components/zero-loading/zero-loading"
+  }
+}

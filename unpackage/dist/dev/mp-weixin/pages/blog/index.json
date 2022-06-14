@@ -1,0 +1,10 @@
+{
+  "navigationBarTitleText": "技术博客",
+  "enablePullDownRefresh": false,
+  "navigationBarBackgroundColor": "#FDFAED",
+  "usingComponents": {
+    "zero-loading": "/uni_modules/zero-loading/components/zero-loading/zero-loading",
+    "u-loadmore": "/uview-ui/components/u-loadmore/u-loadmore",
+    "u-empty": "/uview-ui/components/u-empty/u-empty"
+  }
+}

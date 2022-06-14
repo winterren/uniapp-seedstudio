@@ -1,0 +1,11 @@
+{
+  "navigationBarTitleText": "练习模式",
+  "enablePullDownRefresh": false,
+  "navigationBarBackgroundColor": "#fff",
+  "usingComponents": {
+    "zero-loading": "/uni_modules/zero-loading/components/zero-loading/zero-loading",
+    "uni-popup": "/uni_modules/uni-popup/components/uni-popup/uni-popup",
+    "uni-popup-dialog": "/uni_modules/uni-popup/components/uni-popup-dialog/uni-popup-dialog",
+    "uni-drawer": "/uni_modules/uni-drawer/components/uni-drawer/uni-drawer"
+  }
+}

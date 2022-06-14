@@ -1,0 +1,65 @@
+{
+  "id": "",
+  "name": "",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "7008897",
+      "name": "brush",
+      "font_class": "brush",
+      "unicode": "e6e5",
+      "unicode_decimal": 59109
+    },
+    {
+      "icon_id": "7008898",
+      "name": "brush_fill",
+      "font_class": "brush_fill",
+      "unicode": "e6e6",
+      "unicode_decimal": 59110
+    },
+    {
+      "icon_id": "7008906",
+      "name": "collection_fill",
+      "font_class": "collection_fill",
+      "unicode": "e6ea",
+      "unicode_decimal": 59114
+    },
+    {
+      "icon_id": "7008907",
+      "name": "collection",
+      "font_class": "collection",
+      "unicode": "e6eb",
+      "unicode_decimal": 59115
+    },
+    {
+      "icon_id": "7008914",
+      "name": "createtask_fill",
+      "font_class": "createtask_fill",
+      "unicode": "e6ee",
+      "unicode_decimal": 59118
+    },
+    {
+      "icon_id": "7008915",
+      "name": "createtask",
+      "font_class": "createtask",
+      "unicode": "e6ef",
+      "unicode_decimal": 59119
+    },
+    {
+      "icon_id": "7008935",
+      "name": "flag_fill",
+      "font_class": "flag_fill",
+      "unicode": "e6fb",
+      "unicode_decimal": 59131
+    },
+    {
+      "icon_id": "7008936",
+      "name": "flag",
+      "font_class": "flag",
+      "unicode": "e6fc",
+      "unicode_decimal": 59132
+    }
+  ]
+}

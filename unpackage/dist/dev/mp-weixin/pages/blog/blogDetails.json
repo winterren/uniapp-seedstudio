@@ -1,0 +1,9 @@
+{
+  "navigationBarTitleText": "博客详情",
+  "enablePullDownRefresh": false,
+  "navigationBarBackgroundColor": "#FDFAED",
+  "usingComponents": {
+    "zero-loading": "/uni_modules/zero-loading/components/zero-loading/zero-loading",
+    "u-parse": "/components/u-parse/u-parse"
+  }
+}

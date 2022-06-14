@@ -1,0 +1,162 @@
+
+page{
+
+	background-color: var(--studioBg);
+}
+.container{
+	padding: 30rpx
+}
+/* 头部 */
+.top{
+	width: 100%;
+	height: 300rpx;
+	text-align: center;
+}
+.top .line1{
+	margin-top: 50rpx;
+	font-size: 60rpx;
+	font-weight: bold;
+	letter-spacing: 5rpx;
+}
+.top .line2{
+	margin-top: 20rpx;
+	font-size: 40rpx;
+	letter-spacing: 5rpx;
+}
+.top .line2 text:first-child{
+	font-weight: bold;
+	margin-right: 10rpx;
+}
+/* 信息卡 */
+.cardItem{
+	background-color: rgba(255,255,255,0.8);
+	border: 1rpx solid #D2D2D2;
+	margin-top: 30rpx;
+}
+.cardItemImg{
+	width: 100%;
+	height: 360rpx;
+}
+.cardItemTitle{
+	margin: 10rpx 20rpx 0;
+	font-size: 28rpx;
+	line-height: 50rpx;
+}
+.cardItemIntro{
+	margin: 10rpx 20rpx 20rpx;
+	color: #888;
+	font-size: 24rpx;
+}
+/* 宫格 */
+.grid{
+	margin-top: 50rpx;
+}
+.grid-item{
+	background-color: rgba(255,255,255,0.8);
+}
+.grid-item-box {
+	flex: 1;
+	/* position: relative; */
+
+	display: flex;
+
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	padding: 20rpx 0;
+	font-size: 26rpx;
+	background: none !important;
+}
+.grid-item-box-text{
+	margin-top: 15rpx;
+	letter-spacing: 2rpx;
+}
+/* 动画波浪背景 */
+.bg{
+	position: fixed;
+	width: 100%;
+	/* height: 100vh; */
+	left: 0;
+	top: 0;
+	bottom: 0;
+	background-color: #F5F5F5;
+	background-color: var(--studioBg);
+	z-index: -30;
+}
+.wave-bg {
+	position: absolute;
+	left: 20%; 
+	top: 15%;
+	/* padding: 0; */
+	/* border: 0; */
+	width: 500rpx;
+	/* height: 400rpx; */
+	/* background-color: rgb(255, 255, 255); */
+	/* border-radius: 50%; */
+}
+.wave0,.wave1{
+	position: absolute;
+	width: 1000rpx;
+	height: 1000rpx;
+	margin-top: -150%;
+	margin-left: -50%;
+	background-color: rgba(58, 214, 177,.4);
+	border-radius: 45%;
+	-webkit-animation: spin 10s linear -0s infinite;
+	        animation: spin 10s linear -0s infinite;
+	z-index: -10;
+}
+.wave1{
+	margin-top: -152%;
+	background-color: rgb(58, 214, 177,.9);
+	border-radius: 47%;
+	-webkit-animation: spin 30s linear -15s infinite;
+	        animation: spin 30s linear -15s infinite;
+	z-index: -20;
+}
+@-webkit-keyframes spin{
+0%{
+		-webkit-transform: translate(-0%, -0%) rotate(0deg) scale(1);
+		        transform: translate(-0%, -0%) rotate(0deg) scale(1);
+}
+25%{
+		-webkit-transform: translate(-1%, -1%) rotate(90deg) scale(1.0);
+		        transform: translate(-1%, -1%) rotate(90deg) scale(1.0);
+}
+50%{
+		-webkit-transform: translate(-0%, -2%) rotate(180deg) scale(1.0);
+		        transform: translate(-0%, -2%) rotate(180deg) scale(1.0);
+}
+75%{
+		-webkit-transform: translate(1%, -1%) rotate(270deg) scale(1.0);
+		        transform: translate(1%, -1%) rotate(270deg) scale(1.0);
+}
+100%{
+		-webkit-transform: translate(-0%, -0%) rotate(360deg) scale(1.0);
+		        transform: translate(-0%, -0%) rotate(360deg) scale(1.0);
+}
+}
+@keyframes spin{
+0%{
+		-webkit-transform: translate(-0%, -0%) rotate(0deg) scale(1);
+		        transform: translate(-0%, -0%) rotate(0deg) scale(1);
+}
+25%{
+		-webkit-transform: translate(-1%, -1%) rotate(90deg) scale(1.0);
+		        transform: translate(-1%, -1%) rotate(90deg) scale(1.0);
+}
+50%{
+		-webkit-transform: translate(-0%, -2%) rotate(180deg) scale(1.0);
+		        transform: translate(-0%, -2%) rotate(180deg) scale(1.0);
+}
+75%{
+		-webkit-transform: translate(1%, -1%) rotate(270deg) scale(1.0);
+		        transform: translate(1%, -1%) rotate(270deg) scale(1.0);
+}
+100%{
+		-webkit-transform: translate(-0%, -0%) rotate(360deg) scale(1.0);
+		        transform: translate(-0%, -0%) rotate(360deg) scale(1.0);
+}
+}
+
+

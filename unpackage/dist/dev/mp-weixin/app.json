@@ -1,0 +1,19 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/about/about",
+    "pages/quiz/practice/index",
+    "pages/quiz/practice/practice",
+    "pages/quiz/practice/score",
+    "pages/blog/index",
+    "pages/blog/blogDetails"
+  ],
+  "subPackages": [],
+  "window": {
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "Seed Studio",
+    "navigationBarBackgroundColor": "#F8F8F8",
+    "backgroundColor": "#F8F8F8"
+  },
+  "usingComponents": {}
+}

@@ -123,6 +123,7 @@
 	export default {
 		data() {
 			return {
+				wrongList:[],
 				ready:false,
 				qList:[],
 				emptyAnswerRecord:[],
@@ -212,18 +213,32 @@
 				let rq = option.rq
 				let ra = option.ra
 				
+				let wrongArray = '';
+				this.wrongList = uni.getStorageSync("exam_wrong_list")
+				for(let i=0;i<this.wrongList.length;i++){
+					wrongArray += '&filters[id][$in]['+i+']='+this.wrongList[i].qid
+				}
+				// this.wrongList.forEach((item)=>{
+				// 	this.qid
+				// })
+				
+				// filters[id][$in][0]=1&filters[id][$in][1]=2
+				
 				//请求题库
 				uni.request({
-					url: this.$url+'/api/exam-questions?populate=exam_category'
-					+'&filters[exam_category][id]='+option.cate
-					+'&filters[id][$gt]='+from
-					+'&filters[id][$lt]='+to
-					+'&sort[0]=id'
+					url: this.$url+'/api/exam-questions?populate=*'
+					+wrongArray
+					// +'&filters[exam_category][id]='+option.cate
+					// +'&filters[id][$gt]='+from
+					// +'&filters[id][$lt]='+to
+					// +'&sort[0]=id'
 					+'&pagination[pageSize]=100'
-					+'&pagination[page]='+this.page,
+					+'&pagination[page]='+this.page
+					,
 					success: (res) => {
 						if(res.data.data.length != 0){
-							console.log(res.data.data)
+							console.log(res.data.meta.pagination.total)
+							this.total = res.data.meta.pagination.total
 							if(this.total>100){
 								this.totalTemp = 100
 								this.total -= 100
@@ -232,6 +247,7 @@
 							}
 							for(let i=0; i<this.totalTemp; i++){
 								let temp = res.data.data[i].attributes
+								// console.log(temp)
 								let optList =  [temp.option_a, temp.option_b, temp.option_c, temp.option_d, temp.option_e, temp.option_f, temp.option_g, temp.option_h].filter(item=>{return item!=null})
 								// 实例变量数组：保存题库信息
 								this.qList.push({

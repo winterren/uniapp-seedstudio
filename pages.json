@@ -49,14 +49,13 @@
 				"navigationBarBackgroundColor":"#3ad6b1"
 		    }
 		},
-		// 技术博客博客
+		// 技术博客
 		{
 		    "path" : "pages/blog/index",
 		    "style" :                                                                                    
 		    {
-		        "navigationBarTitleText": "技术博客",
-		        "enablePullDownRefresh": false,
-				"navigationBarBackgroundColor":"#FDFAED"
+				"navigationBarTitleText": "博客",
+				"enablePullDownRefresh": false
 		    }
 		},
 		{
@@ -64,10 +63,74 @@
 		    "style" :                                                                                    
 		    {
 		        "navigationBarTitleText": "博客详情",
-		        "enablePullDownRefresh": false,
-				"navigationBarBackgroundColor":"#FDFAED"
+		        "enablePullDownRefresh": false
+		    }
+		},
+		// 近期动态
+		{
+		    "path" : "pages/information/index",
+		    "style" :                                                                                    
+		    {
+				"navigationBarTitleText": "动态",
+				"enablePullDownRefresh": false
+		    }
+		},
+		{
+		    "path" : "pages/information/detail",
+		    "style" :                                                                                    
+		    {
+				"navigationBarTitleText": "动态详情",
+				"enablePullDownRefresh": false
 		    }
 		}
+		//大赛习题
+        ,{
+            "path" : "pages/quiz/index",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false,
+				"navigationBarBackgroundColor":"#3ad6b1"
+            }
+            
+        }
+        ,{
+            "path" : "pages/quiz/wrong/index",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "我的错题",
+                "enablePullDownRefresh": false,
+				"navigationBarBackgroundColor":"#FDFAED"
+            }
+            
+        }
+        ,{
+            "path" : "pages/quiz/wrong/manage",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+		,{
+		    "path" : "pages/quiz/wrong/practice",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "",
+		        "enablePullDownRefresh": false
+		    }
+		    
+		}
+        ,{
+            "path" : "pages/achievement/index",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",

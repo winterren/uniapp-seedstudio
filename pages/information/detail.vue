@@ -6,11 +6,9 @@
 		</view>
 		<!-- 内容详情 -->
 		<view class="detail" v-if="ready">
-			<view class="title">{{details.title}}</view>
-			<view class="info">
-				<view class="name">{{details.name}}</view>
-				<view class="time">{{details.time}}</view>
-			</view>
+			<view class="title">{{information.title}}</view>
+			<view class="time">{{information.time}}</view>
+			<image class="img" :src="information.cover" mode=""></image>
 			<u-parse :content="content"></u-parse>
 		</view>
 	</view>
@@ -26,26 +24,26 @@
 		data() {
 			return {
 				ready: false,
-				details: {},
+				information: {},
 				content: '',
 				name: ''
 			}
 		},
 		methods: {
-			// 获取博客详情
+			// 获取动态详情
 			getBlogDetail(id) {
 				uni.request({
-					url: this.$url + '/api/blogs/' + id + '?populate=*',
+					url: this.$url + '/api/informations/' + id + '?populate=*',
 					method: 'GET',
 					success:(res) => {
-						this.details = {
+						this.information = {
+							id: res.data.data.id,
 							title: res.data.data.attributes.title,
 							content: res.data.data.attributes.content,
-							name: res.data.data.attributes.users_permissions_user.data.attributes.nickname,
-							time: res.data.data.attributes.created_date
+							time: res.data.data.attributes.create_date,
+							cover: this.$url + res.data.data.attributes.cover.data.attributes.url
 						}
-						console.log(this.details)
-						this.content = marked(this.replaceContent(this.details.content))
+						this.content = marked(this.replaceContent(this.information.content))
 						this.ready = true
 					}
 				})
@@ -61,7 +59,7 @@
 			}
 		},
 		onLoad(e) {
-			// 获取博客详情
+			// 获取动态详情
 			this.getBlogDetail(e.id)
 		}
 	}
@@ -86,15 +84,15 @@
 		font-size: 38rpx;
 		font-weight: 600;
 	}
-	.info {
-		display: flex;
-		justify-content: center;
+	.img {
+		width: 100%;
+		height: 320rpx;
+	}
+	.time {
+		text-align: center;
 		font-size: 28rpx;
 		color: #838383;
 		padding: 20rpx 0;
-	}
-	.name {
-		padding-right: 60rpx;
 	}
 	
 </style>

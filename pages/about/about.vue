@@ -13,12 +13,12 @@
 			</view>
 			<view class="title"><text>团队</text>介绍</view>
 			<view class="card team">
-				<image src="https://www.seedstudio.cn:1437/uploads/team_01_f639387028.jpg?updated_at=2022-06-13T02:25:25.268Z" mode="aspectFill"></image>
+				<image src="https://www.seedstudio.cn:1437/uploads/team_01_f639387028.jpg" mode="aspectFill" :lazy-load="true"></image>
 				<p>萌芽工作室，2022年成立于徐州财校信息技术系，致力于为校园提供小程序开发、公众号建设、网站建设与维护等服务。我们的愿景是让代码成为一种生活方式，萌生出美好的作品。</p>
 			</view>
 			<view class="card" v-for="(item,index) in memberList">
 				<view class="card-left">
-					<image class="avatar" :src="item.img" mode=""></image>
+					<image class="avatar" :src="item.img" mode="" :lazy-load="true"></image>
 				</view>
 				<view class="card-right">
 					<view class="card-right-title"><text class="name">{{item.name}} </text>	<text class="tag">{{item.tag}}</text></view>

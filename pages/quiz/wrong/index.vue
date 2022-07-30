@@ -4,48 +4,7 @@
 			<zero-loading type="love"></zero-loading>
 		</view>
 		<view class="container" v-if="ready">
-			<!-- 分类 -->
-			<view class="formItem">
-				<view class="formItemLeft">
-					分类
-				</view>
-				<view class="formItemRight">
-					<picker @change="handleCateChange" :value="cateIndex" :range="cateArray" range-key="name">
-						<view class="picker">{{cateArray[cateIndex].name}}</view>
-					</picker>
-				</view>
-			</view>
-			<!-- 从 -->
-			<view class="formItem">
-				<view class="formItemLeft">
-					起始位置
-				</view>
-				<view class="formItemRight">
-					<picker @change="handleFromPicker" :value="fromIndex" :range="totalQuestionNumArr">
-						<view class="picker">{{totalQuestionNumArr[fromIndex]}}</view>
-					</picker>
-				</view>
-			</view>
-			<!-- 到 -->
-			<view class="formItem">
-				<view class="formItemLeft">
-					结束位置
-				</view>
-				<view class="formItemRight">
-					<picker @change="handleToPicker" :value="toIndex" :range="totalQuestionNumArr">
-						<view class="picker">{{totalQuestionNumArr[toIndex]}}</view>
-					</picker>
-				</view>
-			</view>
-			<!-- 数量 -->
-			<!-- <view class="formItem">
-				<view class="formItemLeft">
-					抽取题数
-				</view>
-				<view class="formItemRight">
-					<input class="picker" type="text" value="" />
-				</view>
-			</view> -->
+			
 			<!-- 乱序 -->
 			<view class="formItem">
 				<view class="formItemLeft">
@@ -65,7 +24,8 @@
 				</view>
 			</view>
 			<!-- 开始按钮 -->
-			<view class="btnStart" @click="handleStart">开始练习</view>
+			<view class="btnStart" @click="handleStart">练习错题</view>
+			<view class="btnStart" @click="handleWrong">管理错题</view>
 		</view>
 	</view>
 </template>
@@ -176,8 +136,13 @@
 				let ra = this.flagRandAnswer
 				console.log(cate,from,to,rq,ra)
 				uni.navigateTo({
-					url: '/pages/quiz/practice/practice?cate='+cate+"&from="+from+"&to="+to
+					url: '/pages/quiz/wrong/practice?cate='+cate+"&from="+from+"&to="+to
 						+"&rq="+rq+"&ra="+ra
+				})
+			},
+			handleWrong(){
+				uni.navigateTo({
+					url: '/pages/quiz/wrong/manage'
 				})
 			}
 		}

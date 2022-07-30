@@ -29,10 +29,10 @@
 				</uni-grid>
 				<!-- 动态 -->
 				<view class="cardList">
-					<view class="cardItem" v-for="item in 1">
-						<image src="../../static/img/index/banner01.jpg" mode="" class="cardItemImg" ></image>
-						<view class="cardItemTitle">萌芽工作室小程序开张了！</view>
-						<view class="cardItemIntro">技术博客、大赛习题等栏目陆续上线中……</view>
+					<view class="cardItem" v-for="item in news">
+						<image :src="item.cover" mode="" class="cardItemImg" ></image>
+						<view class="cardItemTitle">{{item.title}}</view>
+						<view class="cardItemIntro">{{item.content}}</view>
 					</view>
 				</view>
 			</view>
@@ -45,11 +45,14 @@
 		data() {
 			return {
 				ready: false,
+				news: [
+					
+				],
 				list: [
 				{
 					img: '/static/c3.png',
 					text: '近期动态',
-					url:'',
+					url:'/pages/information/index',
 					type: "fire"
 				},
 				{
@@ -61,7 +64,7 @@
 				{
 					img: '/static/c2.png',
 					text: '大赛习题',
-					url:'/pages/quiz/practice/index',
+					url:'/pages/quiz/index',
 					type: "calendar",
 				},
 				{
@@ -86,6 +89,7 @@
 			}
 		},
 		onLoad() {
+			this.getInformation()
 			
 		},
 		onReady() {
@@ -113,6 +117,30 @@
 				// 	title: `点击第${index+1}个宫格`,
 				// 	icon: 'none'
 				// })
+			},
+			// 获取动态
+			getInformation() {
+				uni.request({
+					url: this.$url + '/api/informations?pagination[pageSize]=3&pagination[page]=1&populate=*&sort[0]=updatedAt:desc',
+					method: 'GET',
+					success:(res) => {
+						res.data.data.forEach((item)=>{
+							this.news.push({
+								id: item.id,
+								title: item.attributes.title,
+								content: item.attributes.content,
+								time: item.attributes.create_date,
+								cover: this.$url + item.attributes.cover.data.attributes.url
+							})
+						})
+					},
+					fail: () => {
+						uni.showToast({
+							icon:"none",
+							title:"服务器开小差了，请稍候重试"
+						})
+					}
+				})
 			},
 		}
 	}
@@ -156,7 +184,7 @@
 	}
 	.cardItemImg{
 		width: 100%;
-		height: 360rpx;
+		height: 320rpx;
 	}
 	.cardItemTitle{
 		margin: 10rpx 20rpx 0;
